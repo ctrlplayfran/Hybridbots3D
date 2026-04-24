@@ -38,7 +38,7 @@
             pointer-events: none;
         }
 
-        /* MENU SUPERIOR (mantido) */
+        /* MENU SUPERIOR */
         #top-navbar {
             position: fixed;
             top: 0;
@@ -129,50 +129,50 @@
         }
         .cart-badge.visible { opacity: 1; }
 
-        /* CARROSSEL 3D */
+        /* CARROSSEL 3D - TAMANHOS REDUZIDOS */
         .slider-box {
             position: relative;
             z-index: 10;
             width: 100%;
-            height: 280px;
+            height: 240px;
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 900px;
+            perspective: 700px;
             margin-top: 75px;
             margin-bottom: 5px;
         }
         .slider {
             position: relative;
-            width: 150px;
-            height: 210px;
+            width: 120px;
+            height: 170px;
             transform-style: preserve-3d;
-            animation: orbitRun 45s linear infinite;
+            animation: orbitRun 35s linear infinite;
             will-change: transform;
         }
         .item {
             position: absolute;
             inset: 0;
-            transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(260px);
-            border-radius: 16px;
+            transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(200px);
+            border-radius: 14px;
             background: #111115;
-            box-shadow: 0 10px 18px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,176,122,0.3);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,176,122,0.3);
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            padding: 8px;
+            padding: 6px;
             overflow: hidden;
             transition: filter 0.2s, box-shadow 0.2s;
         }
         .item:hover {
             filter: brightness(1.08);
-            box-shadow: 0 12px 22px rgba(0,0,0,0.7), 0 0 0 2px rgba(200,176,122,0.5);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.6), 0 0 0 2px rgba(200,176,122,0.5);
         }
         .item-img {
             width: 100%;
             flex: 1;
             min-height: 0;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             background: #1a1a1e;
         }
@@ -184,30 +184,30 @@
         }
         .product-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 0.02em;
             color: #f0e8dc;
             text-align: center;
-            margin-top: 5px;
+            margin-top: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .product-price {
             font-family: 'Barlow Condensed', sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: #c8b07a;
             text-align: center;
-            margin: 2px 0;
+            margin: 1px 0;
         }
         .btn-saiba-item {
             background: rgba(200,176,122,0.2);
             border: 1px solid rgba(200,176,122,0.6);
             border-radius: 30px;
-            padding: 3px 0;
+            padding: 2px 0;
             font-family: 'Barlow Condensed', sans-serif;
-            font-size: 8px;
+            font-size: 7px;
             letter-spacing: 0.1em;
             color: #f0e8dc;
             text-align: center;
@@ -222,28 +222,28 @@
 
         @media (min-width: 601px) {
             .slider-box {
-                height: 320px;
-                perspective: 1100px;
+                height: 260px;
+                perspective: 850px;
                 margin-top: 80px;
             }
             .slider {
-                width: 180px;
-                height: 250px;
+                width: 140px;
+                height: 195px;
             }
             .item {
-                transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(380px);
-                padding: 10px;
+                transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(240px);
+                padding: 8px;
             }
             .product-name {
-                font-size: 13px;
+                font-size: 11px;
                 white-space: normal;
             }
             .product-price {
-                font-size: 13px;
+                font-size: 11px;
             }
             .btn-saiba-item {
-                font-size: 10px;
-                padding: 5px 0;
+                font-size: 8px;
+                padding: 4px 0;
             }
         }
 
@@ -281,7 +281,7 @@
             letter-spacing: 0.2em;
         }
         
-        /* ===== GRID DESKTOP: 6 cards em uma única linha (flex nowrap) ===== */
+        /* DESKTOP: 6 cards em uma linha */
         .cards-grid {
             display: flex;
             flex-direction: row;
@@ -294,10 +294,9 @@
             padding-bottom: 10px;
         }
         
-        /* Estilo do card individual (tamanho fixo e consistente) */
         .static-card {
             flex: 0 0 auto;
-            width: 190px;
+            width: 180px;
             background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(4px);
             border-radius: 16px;
@@ -350,7 +349,7 @@
             padding: 4px 0;
         }
         
-        /* ===== MOBILE: 2 colunas com grid ===== */
+        /* MOBILE: 2 colunas */
         @media (max-width: 768px) {
             .cards-grid {
                 display: grid;
@@ -367,30 +366,22 @@
             .static-card-name {
                 font-size: 12px;
                 white-space: normal;
-                line-height: 1.2;
             }
             .static-card-price {
                 font-size: 12px;
             }
-            .static-card .btn-saiba-item {
-                font-size: 9px;
-            }
             .section-title {
                 font-size: 18px;
             }
-            .section-title span {
-                font-size: 9px;
-            }
         }
         
-        /* Ajuste para desktop com telas muito largas (opcional) */
         @media (min-width: 1400px) {
             .static-card {
-                width: 210px;
+                width: 200px;
             }
         }
         
-        /* SEÇÃO PARCEIROS (minimalista) */
+        /* SEÇÃO PARCEIROS - TEXTOS DETALHADOS RESTAURADOS */
         .parceiros-section {
             position: relative;
             z-index: 20;
@@ -417,7 +408,7 @@
             border-radius: 24px;
             padding: 20px 16px;
             flex: 1;
-            min-width: 240px;
+            min-width: 260px;
             border: 1px solid rgba(200,176,122,0.3);
             transition: all 0.2s ease;
             text-align: center;
@@ -438,6 +429,12 @@
             color: #f0e8dc;
             font-family: 'Bebas Neue', sans-serif;
             margin: 10px 0;
+        }
+        .card-parceiro p {
+            font-size: 14px;
+            color: #ccc8c0;
+            margin: 8px 0;
+            line-height: 1.4;
         }
         .badge-minimal {
             background: rgba(200,176,122,0.15);
@@ -504,7 +501,7 @@
             margin: 15px auto 20px auto;
         }
         
-        /* MODAL E CARRINHO (resumidos mas funcionais) */
+        /* MODAL E CARRINHO */
         .product-modal {
             position: fixed;
             top: 0;
@@ -665,7 +662,7 @@
     <div class="cards-grid" id="static-cards-grid"></div>
 </div>
 
-<!-- SEÇÃO PARCEIROS -->
+<!-- SEÇÃO PARCEIROS COM TEXTOS EXPLICATIVOS COMPLETOS -->
 <div class="parceiros-section">
     <div class="section-title">
         SEJA UM PARCEIRO
@@ -674,14 +671,14 @@
     <div class="parceiros-grid">
         <div class="card-parceiro">
             <h3>COMPRA DIRETA</h3>
-            <div class="destaque">-50%</div>
-            <p>Você compra por metade do preço de varejo e revende com 100% de margem.</p>
+            <div class="destaque">50% OFF</div>
+            <p>O comerciante compra de mim por <strong>metade do preço de varejo</strong> e revende com 100% de margem. Você lucra dobrado em cada peça!</p>
             <div class="badge-minimal">LUCRATIVO</div>
         </div>
         <div class="card-parceiro">
             <h3>CONSIGNAÇÃO</h3>
             <div class="destaque">70% / 30%</div>
-            <p>Sem investimento inicial. Você fica com 30% do valor de cada venda.</p>
+            <p>Você fica com os produtos sem investimento inicial. Se vender, <strong>você fica com 30%</strong> e eu com 70%. Eu corro o risco de estoque parado, você não!</p>
             <div class="badge-minimal">RISCO ZERO</div>
         </div>
     </div>
@@ -694,7 +691,7 @@
         </button>
     </div>
     <div class="info-frete">
-        FRETE DIFERENCIADO PARA TODO MATO GROSSO — Condições especiais para revendedores.
+        🚚 <strong>FRETE DIFERENCIADO PARA TODO MATO GROSSO</strong> — Condições especiais para revendedores do estado. Consulte!
     </div>
 </div>
 
@@ -856,8 +853,10 @@
     });
     document.getElementById('top-portfolio').addEventListener('click', ()=>window.open('https://www.instagram.com/hybridbots/', '_blank'));
     document.getElementById('top-whatsapp').addEventListener('click', ()=>window.open('https://wa.me/5511999999999', '_blank'));
+    
+    // Botão WhatsApp para parceiros com mensagem pré-definida
     document.getElementById('btnParceiroWhats').addEventListener('click', () => {
-        const msg = "Olá! Tenho interesse em ser parceiro revendedor dos chaveiros 3D. Gostaria de saber mais sobre as condições (compra direta com 50% ou consignação 70/30) e frete para Mato Grosso.";
+        const msg = "Olá! Tenho interesse em ser parceiro revendedor dos chaveiros 3D. Gostaria de saber mais sobre as condições: compra direta com 50% de desconto ou consignação 70/30. Também quero informações sobre o frete diferenciado para Mato Grosso.";
         window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(msg)}`, '_blank');
     });
     
