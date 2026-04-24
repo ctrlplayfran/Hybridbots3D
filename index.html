@@ -17,7 +17,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* CORPO AGORA COM SCROLL NATURAL - SEM overflow: hidden para permitir rolagem vertical */
         body {
             background: #0A0A0C;
             font-family: 'Barlow', sans-serif;
@@ -29,7 +28,6 @@
             width: 100%;
         }
 
-        /* Canvas 3D fixo no fundo (cobre toda a área visível, inclusive durante scroll) */
         #canvas-container {
             position: fixed;
             top: 0;
@@ -40,7 +38,7 @@
             pointer-events: none;
         }
 
-        /* ========= MENU SUPERIOR ========= */
+        /* MENU SUPERIOR (mantido) */
         #top-navbar {
             position: fixed;
             top: 0;
@@ -92,8 +90,8 @@
             width: 42px;
             height: 42px;
             border-radius: 40px;
-            border: 1px solid rgba(240,235,225,0.2);
-            background: rgba(240,235,225,0.04);
+            border: 1px solid rgba(240,235,225,0.15);
+            background: rgba(240,235,225,0.02);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -101,14 +99,15 @@
             transition: all 0.2s;
         }
         .top-nav-btn:hover {
-            background: rgba(200,176,122,0.2);
-            border-color: rgba(200,176,122,0.6);
+            background: rgba(200,176,122,0.15);
+            border-color: rgba(200,176,122,0.5);
         }
         .top-nav-btn svg {
             width: 18px;
             height: 18px;
-            stroke: #f0e8dc;
-            stroke-width: 1.6;
+            stroke: #e0d6ca;
+            stroke-width: 1.4;
+            fill: none;
         }
         .cart-badge {
             position: absolute;
@@ -130,7 +129,7 @@
         }
         .cart-badge.visible { opacity: 1; }
 
-        /* ===== CARROSSEL 3D (altura reduzida, centralizado) ===== */
+        /* CARROSSEL 3D */
         .slider-box {
             position: relative;
             z-index: 10;
@@ -253,7 +252,7 @@
             to { transform: rotateY(360deg); }
         }
 
-        /* ===== SEÇÃO DE CARDS ESTÁTICOS (compacta, com fundo semi-transparente) ===== */
+        /* PRODUTOS ESTÁTICOS */
         .static-section {
             position: relative;
             z-index: 20;
@@ -264,6 +263,7 @@
             width: 100%;
             overflow-x: auto;
         }
+        
         .section-title {
             text-align: center;
             font-family: 'Bebas Neue', sans-serif;
@@ -281,16 +281,23 @@
             letter-spacing: 0.2em;
         }
         
-        /* GRID PADRÃO (mobile / tablet) 3 colunas */
+        /* ===== GRID DESKTOP: 6 cards em uma única linha (flex nowrap) ===== */
         .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 700px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1400px;
             margin: 0 auto;
+            overflow-x: auto;
+            padding-bottom: 10px;
         }
         
+        /* Estilo do card individual (tamanho fixo e consistente) */
         .static-card {
+            flex: 0 0 auto;
+            width: 190px;
             background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(4px);
             border-radius: 16px;
@@ -342,80 +349,145 @@
             font-size: 9px;
             padding: 4px 0;
         }
-
-        @media (max-width: 550px) {
+        
+        /* ===== MOBILE: 2 colunas com grid ===== */
+        @media (max-width: 768px) {
             .cards-grid {
-                gap: 8px;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                overflow-x: visible;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            .static-card {
+                width: auto;
+                flex: auto;
             }
             .static-card-name {
-                font-size: 11px;
+                font-size: 12px;
+                white-space: normal;
+                line-height: 1.2;
             }
             .static-card-price {
-                font-size: 11px;
+                font-size: 12px;
             }
             .static-card .btn-saiba-item {
-                font-size: 8px;
+                font-size: 9px;
             }
             .section-title {
                 font-size: 18px;
-                margin-bottom: 8px;
             }
             .section-title span {
                 font-size: 9px;
             }
         }
-
-        /* ========== DESKTOP: Cards lado a lado (horizontal, todos em uma linha) ========== */
-        @media (min-width: 1024px) {
-            .static-section {
-                overflow-x: visible;  /* sem scroll desnecessário, os cards se ajustam na largura */
-                padding: 15px 30px 35px;
-            }
-            .cards-grid {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                justify-content: center;
-                align-items: stretch;
-                gap: 20px;
-                max-width: 1400px;
-                margin: 0 auto;
-                /* remove limites de grid */
-            }
+        
+        /* Ajuste para desktop com telas muito largas (opcional) */
+        @media (min-width: 1400px) {
             .static-card {
-                flex: 0 0 auto;
-                width: 190px;
-                transition: transform 0.2s, border-color 0.2s;
-            }
-            /* Para telas muito largas, aumenta um pouco o tamanho */
-            @media (min-width: 1440px) {
-                .static-card {
-                    width: 220px;
-                }
-            }
-            /* Ajuste de tipografia para melhor leitura */
-            .static-card-name {
-                font-size: 15px;
-                white-space: normal;
-                line-height: 1.2;
-            }
-            .static-card-price {
-                font-size: 15px;
-            }
-            .static-card .btn-saiba-item {
-                font-size: 10px;
-                padding: 6px 0;
-            }
-            .section-title {
-                font-size: 28px;
-                margin-bottom: 20px;
-            }
-            .section-title span {
-                font-size: 13px;
+                width: 210px;
             }
         }
-
-        /* Rodapé informativo (fixo, sem ocupar espaço extra) */
+        
+        /* SEÇÃO PARCEIROS (minimalista) */
+        .parceiros-section {
+            position: relative;
+            z-index: 20;
+            margin: 20px 16px 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(20, 25, 35, 0.8) 0%, rgba(10, 12, 18, 0.9) 100%);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            border: 1px solid rgba(200,176,122,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .parceiros-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            margin: 24px 0 20px;
+        }
+        
+        .card-parceiro {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 20px 16px;
+            flex: 1;
+            min-width: 240px;
+            border: 1px solid rgba(200,176,122,0.3);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .card-parceiro:hover {
+            transform: translateY(-5px);
+            border-color: rgba(200,176,122,0.7);
+        }
+        .card-parceiro h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: #c8b07a;
+            margin-bottom: 12px;
+        }
+        .card-parceiro .destaque {
+            font-size: 32px;
+            font-weight: bold;
+            color: #f0e8dc;
+            font-family: 'Bebas Neue', sans-serif;
+            margin: 10px 0;
+        }
+        .badge-minimal {
+            background: rgba(200,176,122,0.15);
+            border-radius: 40px;
+            padding: 6px 12px;
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #c8b07a;
+            margin-top: 12px;
+            border: 0.5px solid rgba(200,176,122,0.3);
+        }
+        .btn-whats-parceiro {
+            background: transparent;
+            border: 1.5px solid #25D366;
+            border-radius: 40px;
+            padding: 12px 24px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 0.1em;
+            color: #25D366;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 16px;
+        }
+        .btn-whats-parceiro:hover {
+            background: #25D366;
+            color: #0a0a0c;
+        }
+        .btn-whats-parceiro svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 1.6;
+            fill: none;
+        }
+        .info-frete {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #aa9f8a;
+            border-top: 1px solid rgba(200,176,122,0.2);
+            padding-top: 16px;
+        }
+        
         .ambient-footer {
             position: relative;
             text-align: center;
@@ -430,10 +502,9 @@
             border-radius: 20px;
             width: fit-content;
             margin: 15px auto 20px auto;
-            pointer-events: none;
         }
-
-        /* ===== MODAL ===== */
+        
+        /* MODAL E CARRINHO (resumidos mas funcionais) */
         .product-modal {
             position: fixed;
             top: 0;
@@ -450,29 +521,21 @@
             visibility: hidden;
             transition: 0.3s;
         }
-        .product-modal.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
+        .product-modal.active { opacity: 1; visibility: visible; }
         .modal-content {
             background: #111115;
             border-radius: 28px;
             width: 88%;
             max-width: 380px;
-            padding: 20px 16px;
-            border: 1px solid rgba(200,176,122,0.4);
+            padding: 20px;
             text-align: center;
-            transform: scale(0.95);
-            transition: transform 0.3s;
+            border: 1px solid rgba(200,176,122,0.4);
         }
-        .product-modal.active .modal-content { transform: scale(1); }
         .modal-img {
             width: 110px;
             height: 110px;
             border-radius: 18px;
             object-fit: cover;
-            margin-bottom: 12px;
             border: 2px solid #c8b07a;
         }
         .modal-title {
@@ -480,57 +543,31 @@
             font-size: 22px;
             color: #f0e8dc;
         }
-        .modal-category {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            color: #c8b07a;
-            margin: 5px 0;
-        }
-        .modal-desc {
-            font-size: 12px;
-            line-height: 1.4;
-            color: #bfb6a8;
-            margin: 10px 0;
-        }
         .modal-price {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 24px;
             color: #c8b07a;
-            margin-bottom: 16px;
+            margin: 10px 0;
         }
         .modal-buttons {
             display: flex;
             gap: 10px;
             justify-content: center;
-            flex-wrap: wrap;
         }
         .modal-btn {
             background: transparent;
             border: 1px solid rgba(200,176,122,0.6);
             padding: 8px 18px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 11px;
-            letter-spacing: 0.15em;
             border-radius: 40px;
             color: #f0e8dc;
             cursor: pointer;
-            transition: 0.2s;
-        }
-        .modal-btn:hover {
-            background: rgba(200,176,122,0.2);
         }
         .modal-btn-buy {
             background: #c8b07a;
             color: #0a0a0c;
             border: none;
-            font-weight: bold;
         }
-        .modal-btn-buy:hover {
-            background: #dcc48e;
-        }
-
-        /* ===== CARRINHO (sidebar) ===== */
+        
         #cart-sidebar {
             position: fixed;
             top: 0;
@@ -542,364 +579,331 @@
             border-left: 1px solid rgba(200,176,122,0.2);
             z-index: 300;
             transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.77,0,0.18,1);
+            transition: transform 0.4s;
             display: flex;
             flex-direction: column;
-            padding: 20px 16px;
-            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            padding: 20px;
         }
         #cart-sidebar.open { transform: translateX(0); }
         #cart-header {
             display: flex;
             justify-content: space-between;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 12px;
-            letter-spacing: 0.2em;
             border-bottom: 1px solid rgba(200,176,122,0.2);
             padding-bottom: 10px;
             margin-bottom: 16px;
         }
-        #cart-close { cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
-        #cart-close:hover { opacity: 1; }
+        #cart-close { cursor: pointer; }
         #cart-items { flex: 1; overflow-y: auto; }
         .cart-item {
             display: flex;
             gap: 10px;
             margin-bottom: 14px;
-            padding-bottom: 10px;
             border-bottom: 1px solid rgba(200,176,122,0.1);
+            padding-bottom: 10px;
         }
         .cart-item-img {
             width: 50px;
             height: 50px;
             border-radius: 10px;
             background-size: cover;
-            background-position: center;
-        }
-        .cart-item-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 14px;
         }
         .cart-item-remove {
             font-size: 9px;
             color: #a09080;
             cursor: pointer;
-            display: inline-block;
-            margin-top: 4px;
-            transition: color 0.2s;
-        }
-        .cart-item-remove:hover { color: #c8b07a; }
-        #cart-footer {
-            border-top: 1px solid rgba(200,176,122,0.2);
-            padding-top: 12px;
-        }
-        #cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 14px;
-            margin-bottom: 10px;
         }
         #cart-checkout {
             background: #c8b07a;
             width: 100%;
-            padding: 10px 0;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: bold;
-            letter-spacing: 0.2em;
-            font-size: 12px;
+            padding: 10px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
         }
-        #cart-checkout:hover {
-            background: #ddc28e;
-        }
-        #cart-empty {
-            text-align: center;
-            margin-top: 30px;
-            color: #7e6e5a;
-            font-size: 12px;
-        }
-
-        /* Garantir que o conteúdo tenha espaçamento inferior adequado */
-        main {
-            position: relative;
-            z-index: 5;
-            padding-bottom: 10px;
-        }
-
-        @media (pointer: coarse) {
-            #cursor, #cursor-dot, #cursor-ring { display: none; }
-            body { cursor: auto; }
-        }
+        #cart-empty { text-align: center; margin-top: 30px; color: #7e6e5a; }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container"></div>
+<div id="canvas-container"></div>
 
-    <nav id="top-navbar">
-        <div class="nav-brand">
-            <img src="logo.jpg" alt="3D Print Store" onerror="this.src='https://placehold.co/200x200?text=3DP'">
-            <span class="brand-text"><strong>IMPRESSÃO 3D</strong> • SLIDE & RELAX</span>
-        </div>
-        <div class="nav-icons">
-            <button class="top-nav-btn" id="top-portfolio">
-                <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            </button>
-            <button class="top-nav-btn" id="top-whatsapp">
-                <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-            </button>
-            <button class="top-nav-btn" id="top-cart">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <circle cx="9" cy="21" r="1.5" />
-                    <circle cx="19" cy="21" r="1.5" />
-                    <path d="M2 3h2l2.7 12.4a2 2 0 0 0 2 1.6h9.6a2 2 0 0 0 2-1.6L22 7H5" />
-                    <polyline points="15 11 18 7 22 11" />
-                </svg>
-                <span class="cart-badge" id="top-cart-badge">0</span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- CARROSSEL 3D -->
-    <div class="slider-box">
-        <div class="slider" id="carousel-slider" style="--quantity: 6;"></div>
+<nav id="top-navbar">
+    <div class="nav-brand">
+        <img src="logo.jpg" alt="3D Print Store" onerror="this.src='https://placehold.co/200x200?text=3DP'">
+        <span class="brand-text"><strong>IMPRESSÃO 3D</strong> • SLIDE & RELAX</span>
     </div>
+    <div class="nav-icons">
+        <button class="top-nav-btn" id="top-portfolio">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </button>
+        <button class="top-nav-btn" id="top-whatsapp">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </button>
+        <button class="top-nav-btn" id="top-cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="9" cy="21" r="1.5" />
+                <circle cx="19" cy="21" r="1.5" />
+                <path d="M2 3h2l2.7 12.4a2 2 0 0 0 2 1.6h9.6a2 2 0 0 0 2-1.6L22 7H5" />
+                <polyline points="15 11 18 7 22 11" />
+            </svg>
+            <span class="cart-badge" id="top-cart-badge">0</span>
+        </button>
+    </div>
+</nav>
 
-    <!-- SEÇÃO DE CARDS ESTÁTICOS (grade desktop horizontal) -->
-    <div class="static-section">
-        <div class="section-title">
-            TODOS OS MODELOS
-            <span>IMPRESSOS EM 3D COM ALTA QUALIDADE</span>
+<!-- CARROSSEL 3D -->
+<div class="slider-box">
+    <div class="slider" id="carousel-slider" style="--quantity: 6;"></div>
+</div>
+
+<!-- PRODUTOS ESTÁTICOS -->
+<div class="static-section">
+    <div class="section-title">
+        MODELOS TÁTICOS
+        <span>IMPRESSOS EM 3D COM ALTA QUALIDADE</span>
+    </div>
+    <div class="cards-grid" id="static-cards-grid"></div>
+</div>
+
+<!-- SEÇÃO PARCEIROS -->
+<div class="parceiros-section">
+    <div class="section-title">
+        SEJA UM PARCEIRO
+        <span>REVENDA NOSSOS CHAVEIROS</span>
+    </div>
+    <div class="parceiros-grid">
+        <div class="card-parceiro">
+            <h3>COMPRA DIRETA</h3>
+            <div class="destaque">-50%</div>
+            <p>Você compra por metade do preço de varejo e revende com 100% de margem.</p>
+            <div class="badge-minimal">LUCRATIVO</div>
         </div>
-        <div class="cards-grid" id="static-cards-grid"></div>
-    </div>
-
-    <div class="ambient-footer">
-        100% IMPRESSÃO 3D | CHAVEIROS NÃO FUNCIONAIS | MECANISMO DESLIZANTE ANTISTRESS
-    </div>
-
-    <!-- MODAL -->
-    <div id="productModal" class="product-modal">
-        <div class="modal-content">
-            <img id="modalImg" class="modal-img" src="" alt="produto">
-            <div id="modalTitle" class="modal-title"></div>
-            <div id="modalCategory" class="modal-category"></div>
-            <div id="modalDesc" class="modal-desc"></div>
-            <div id="modalPrice" class="modal-price"></div>
-            <div class="modal-buttons">
-                <button id="modalBuyBtn" class="modal-btn modal-btn-buy">COMPRAR</button>
-                <button id="modalBackBtn" class="modal-btn">VOLTAR</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- CARRINHO -->
-    <div id="cart-sidebar">
-        <div id="cart-header"><span>SEU CARRINHO</span><span id="cart-close">✕ FECHAR</span></div>
-        <div id="cart-items"></div>
-        <div id="cart-footer">
-            <div id="cart-total"><span>TOTAL</span><span id="cart-total-value">R$ 0</span></div>
-            <button id="cart-checkout">FINALIZAR</button>
+        <div class="card-parceiro">
+            <h3>CONSIGNAÇÃO</h3>
+            <div class="destaque">70% / 30%</div>
+            <p>Sem investimento inicial. Você fica com 30% do valor de cada venda.</p>
+            <div class="badge-minimal">RISCO ZERO</div>
         </div>
     </div>
+    <div style="text-align: center;">
+        <button class="btn-whats-parceiro" id="btnParceiroWhats">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+            </svg>
+            FALAR COM PARCEIROS
+        </button>
+    </div>
+    <div class="info-frete">
+        FRETE DIFERENCIADO PARA TODO MATO GROSSO — Condições especiais para revendedores.
+    </div>
+</div>
 
-    <script type="importmap">
-        { "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }
-    </script>
+<div class="ambient-footer">
+    100% IMPRESSÃO 3D | CHAVEIROS NÃO FUNCIONAIS | MECANISMO DESLIZANTE ANTISTRESS
+</div>
 
-    <script type="module">
-        import * as THREE from 'three';
+<!-- MODAL -->
+<div id="productModal" class="product-modal">
+    <div class="modal-content">
+        <img id="modalImg" class="modal-img" src="" alt="produto">
+        <div id="modalTitle" class="modal-title"></div>
+        <div id="modalPrice" class="modal-price"></div>
+        <div class="modal-buttons">
+            <button id="modalBuyBtn" class="modal-btn modal-btn-buy">COMPRAR</button>
+            <button id="modalBackBtn" class="modal-btn">VOLTAR</button>
+        </div>
+    </div>
+</div>
 
-        // Cena 3D com grid luminoso e estrelas
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0A0A0C);
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 1.2, 10);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+<!-- CARRINHO -->
+<div id="cart-sidebar">
+    <div id="cart-header"><span>SEU CARRINHO</span><span id="cart-close">FECHAR</span></div>
+    <div id="cart-items"></div>
+    <div id="cart-footer">
+        <div id="cart-total"><span>TOTAL</span><span id="cart-total-value">R$ 0</span></div>
+        <button id="cart-checkout">FINALIZAR</button>
+    </div>
+</div>
+
+<script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+
+    // Cena 3D
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0A0A0C);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 1.2, 10);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+    
+    const gridHelper = new THREE.GridHelper(24, 32, 0xffffff, 0xaaaaaa);
+    gridHelper.position.y = -2.3;
+    gridHelper.material.transparent = true;
+    gridHelper.material.opacity = 0.4;
+    scene.add(gridHelper);
+    
+    const starsGeo = new THREE.BufferGeometry();
+    const starsCount = 800;
+    const starPos = new Float32Array(starsCount * 3);
+    for (let i = 0; i < starsCount; i++) {
+        starPos[i*3] = (Math.random() - 0.5) * 160;
+        starPos[i*3+1] = (Math.random() - 0.5) * 60;
+        starPos[i*3+2] = (Math.random() - 0.5) * 70 - 30;
+    }
+    starsGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starsMat = new THREE.PointsMaterial({ color: 0xdddddd, size: 0.08, transparent: true, opacity: 0.5 });
+    const starsField = new THREE.Points(starsGeo, starsMat);
+    scene.add(starsField);
+    
+    function animate() {
+        requestAnimationFrame(animate);
+        gridHelper.rotation.y += 0.0008;
+        starsField.rotation.y += 0.0003;
+        renderer.render(scene, camera);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        container.appendChild(renderer.domElement);
-        
-        const gridHelper = new THREE.GridHelper(24, 32, 0xffffff, 0xaaaaaa);
-        gridHelper.position.y = -2.3;
-        gridHelper.material.transparent = true;
-        gridHelper.material.opacity = 0.4;
-        scene.add(gridHelper);
-        
-        const starsGeo = new THREE.BufferGeometry();
-        const starsCount = 800;
-        const starPos = new Float32Array(starsCount * 3);
-        for (let i = 0; i < starsCount; i++) {
-            starPos[i*3] = (Math.random() - 0.5) * 160;
-            starPos[i*3+1] = (Math.random() - 0.5) * 60;
-            starPos[i*3+2] = (Math.random() - 0.5) * 70 - 30;
-        }
-        starsGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-        const starsMat = new THREE.PointsMaterial({ color: 0xdddddd, size: 0.08, transparent: true, opacity: 0.5 });
-        const starsField = new THREE.Points(starsGeo, starsMat);
-        scene.add(starsField);
-        
-        function animate() {
-            requestAnimationFrame(animate);
-            gridHelper.rotation.y += 0.0008;
-            starsField.rotation.y += 0.0003;
-            renderer.render(scene, camera);
-        }
-        animate();
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        // Lista de produtos (6 modelos)
-        const products = [
-            { id: 0, name: "GLOCK SLIDER", category: "Impresso em 3D / Anti-Stress", price: 49.90, img: "https://picsum.photos/id/20/600/700", desc: "Chaveiro não funcional produzido inteiramente em impressão 3D de alta resolução. Mecanismo deslizante magnético, perfeito para aliviar o estresse. Design compacto e resistente." },
-            { id: 1, name: "AR-15 TACTICAL", category: "Impresso em 3D / Tático", price: 59.90, img: "https://picsum.photos/id/26/600/700", desc: "Peça impressa em 3D com acabamento texturizado. Slider realista com imã interno. Ideal para momentos de foco e relaxamento. Não funcional, apenas coleção." },
-            { id: 2, name: "DESERT EAGLE", category: "Impressão 3D Premium", price: 69.90, img: "https://picsum.photos/id/28/600/700", desc: "Edição limitada em PLA de alta qualidade. Acabamento fosco e sliding action suave. Feito sob demanda em nossa impressora 3D." },
-            { id: 3, name: "1911 CLASSIC", category: "Impresso em 3D / Vintage", price: 54.90, img: "https://picsum.photos/id/35/600/700", desc: "Inspirado na clássica 1911, produzido com tecnologia FDM. Portátil, leve e muito durável. Mecanismo deslizante não funcional." },
-            { id: 4, name: "SIG SAUER", category: "3D Print / Ergonômico", price: 62.90, img: "https://picsum.photos/id/42/600/700", desc: "Forma anatômica, slider magnético impresso em 3D. Ideal para uso diário e alívio de ansiedade. 100% fabricado sob encomenda." },
-            { id: 5, name: "BERETTA 92FS", category: "Impressão 3D Premium", price: 72.90, img: "https://picsum.photos/id/56/600/700", desc: "Design italiano, som nítido e deslize perfeito. Peça de colecionador fabricada em impressora 3D de última geração. Não funcional." }
-        ];
-        
-        // Montar carrossel 3D
-        const sliderContainer = document.getElementById('carousel-slider');
-        sliderContainer.innerHTML = '';
-        products.forEach((prod, idx) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'item';
-            itemDiv.setAttribute('data-prod-id', prod.id);
-            itemDiv.style.setProperty('--position', idx + 1);
-            itemDiv.innerHTML = `
-                <div class="item-img">
-                    <img src="${prod.img}" alt="${prod.name}" loading="lazy">
+    });
+    
+    // Produtos
+    const products = [
+        { id: 0, name: "GLOCK 17", price: 59.90, img: "https://makerworld.bblmw.com/makerworld/model/US4d69e53951972e/design/2026-01-09_edc678c75c0058.jpg", desc: "Chaveiro não funcional inspirado na Glock 17. Mecanismo deslizante magnético." },
+        { id: 1, name: "HK USP MATCH", price: 69.90, img: "https://makerworld.bblmw.com/makerworld/model/US57e20a5b93727e/design/2026-01-02_072992a4243a38.jpg", desc: "Modelo HK USP Match com acabamento texturizado e slider magnético." },
+        { id: 2, name: "DESERT EAGLE", price: 79.90, img: "https://makerworld.bblmw.com/makerworld/model/US6ef1dbad227ed6/design/2026-01-19_5645fd1d84e768.jpg", desc: "Edição limitada do Desert Eagle em PLA de alta qualidade." },
+        { id: 3, name: "MAKAROV PM", price: 64.90, img: "https://makerworld.bblmw.com/makerworld/model/USff923f0b0fa23a/design/2025-12-22_f4rvzi0ve7s8.jpg", desc: "Clássica Makarov PM, portátil e muito durável." },
+        { id: 4, name: "CZ SHADOW 2", price: 74.90, img: "https://makerworld.bblmw.com/makerworld/model/US9962d140eb46f7/design/2026-01-13_a357cbf0d1437.jpg", desc: "Chaveiro estilo CZ Shadow 2 com deslize suave." },
+        { id: 5, name: "HK USP COMPACT", price: 67.90, img: "https://makerworld.bblmw.com/makerworld/model/US98b790ed78b742/design/1ff52c545c86b9af.jpg", desc: "Versão compacta do HK USP, ideal para uso diário." }
+    ];
+    
+    // Carrossel 3D
+    const sliderContainer = document.getElementById('carousel-slider');
+    sliderContainer.innerHTML = '';
+    products.forEach((prod, idx) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'item';
+        itemDiv.setAttribute('data-prod-id', prod.id);
+        itemDiv.style.setProperty('--position', idx + 1);
+        itemDiv.innerHTML = `
+            <div class="item-img"><img src="${prod.img}" alt="${prod.name}" loading="lazy"></div>
+            <div class="product-name">${prod.name}</div>
+            <div class="product-price">R$ ${prod.price.toFixed(2)}</div>
+            <button class="btn-saiba-item" data-id="${prod.id}">SAIBA MAIS</button>
+        `;
+        sliderContainer.appendChild(itemDiv);
+    });
+    
+    // Grid estático
+    const staticGrid = document.getElementById('static-cards-grid');
+    staticGrid.innerHTML = '';
+    products.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'static-card';
+        card.setAttribute('data-prod-id', prod.id);
+        card.innerHTML = `
+            <div class="static-card-img"><img src="${prod.img}" alt="${prod.name}" loading="lazy"></div>
+            <div class="static-card-name">${prod.name}</div>
+            <div class="static-card-price">R$ ${prod.price.toFixed(2)}</div>
+            <button class="btn-saiba-item" data-id="${prod.id}">SAIBA MAIS</button>
+        `;
+        staticGrid.appendChild(card);
+    });
+    
+    // Carrinho
+    let cart = [];
+    function updateCartUI() {
+        const totalItems = cart.reduce((s,i)=>s+i.quantity,0);
+        const badge = document.getElementById('top-cart-badge');
+        if(badge) { badge.textContent = totalItems; badge.classList.toggle('visible', totalItems>0); }
+        const cartDiv = document.getElementById('cart-items');
+        if(!cart.length) cartDiv.innerHTML = '<div id="cart-empty">Carrinho vazio.</div>';
+        else {
+            cartDiv.innerHTML = cart.map(i => `
+                <div class="cart-item">
+                    <div class="cart-item-img" style="background-image:url('${i.img}')"></div>
+                    <div><div>${i.name}</div><div>R$ ${i.price.toFixed(2)} x ${i.quantity}</div><span class="cart-item-remove" data-id="${i.id}">remover</span></div>
                 </div>
-                <div class="product-name">${prod.name}</div>
-                <div class="product-price">R$ ${prod.price.toFixed(2)}</div>
-                <button class="btn-saiba-item" data-id="${prod.id}">SAIBA MAIS</button>
-            `;
-            sliderContainer.appendChild(itemDiv);
-        });
-        
-        // Gerar cards estáticos (grade flex horizontal no desktop)
-        const staticGrid = document.getElementById('static-cards-grid');
-        staticGrid.innerHTML = '';
-        products.forEach(prod => {
-            const card = document.createElement('div');
-            card.className = 'static-card';
-            card.setAttribute('data-prod-id', prod.id);
-            card.innerHTML = `
-                <div class="static-card-img">
-                    <img src="${prod.img}" alt="${prod.name}" loading="lazy">
-                </div>
-                <div class="static-card-name">${prod.name}</div>
-                <div class="static-card-price">R$ ${prod.price.toFixed(2)}</div>
-                <button class="btn-saiba-item" data-id="${prod.id}">SAIBA MAIS</button>
-            `;
-            staticGrid.appendChild(card);
-        });
-        
-        // Gerenciamento do carrinho
-        let cart = [];
-        function updateCartUI() {
-            const totalItems = cart.reduce((s,i)=>s+i.quantity,0);
-            const badge = document.getElementById('top-cart-badge');
-            if(badge) { badge.textContent = totalItems; badge.classList.toggle('visible', totalItems>0); }
-            const cartDiv = document.getElementById('cart-items');
-            if(!cart.length) cartDiv.innerHTML = '<div id="cart-empty">🛒 Carrinho vazio.<br>Clique em "COMPRAR" nos detalhes do produto.</div>';
-            else {
-                cartDiv.innerHTML = cart.map(i => `
-                    <div class="cart-item">
-                        <div class="cart-item-img" style="background-image:url('${i.img}')"></div>
-                        <div>
-                            <div class="cart-item-title">${i.name}</div>
-                            <div>R$ ${i.price.toFixed(2)} x ${i.quantity}</div>
-                            <span class="cart-item-remove" data-id="${i.id}">Remover</span>
-                        </div>
-                    </div>
-                `).join('');
-                document.querySelectorAll('.cart-item-remove').forEach(btn => btn.addEventListener('click', e => removeFromCart(parseInt(btn.dataset.id))));
-            }
-            const total = cart.reduce((a,i)=>a+(i.price*i.quantity),0);
-            document.getElementById('cart-total-value').textContent = `R$ ${total.toFixed(2)}`;
+            `).join('');
+            document.querySelectorAll('.cart-item-remove').forEach(btn => btn.addEventListener('click', e => removeFromCart(parseInt(btn.dataset.id))));
         }
-        function addToCart(id) {
-            const prod = products.find(p=>p.id===id);
-            if(!prod) return;
-            const exist = cart.find(i=>i.id===id);
-            if(exist) exist.quantity++;
-            else cart.push({...prod, quantity:1});
-            updateCartUI();
-            document.getElementById('cart-sidebar').classList.add('open');
-        }
-        function removeFromCart(id) { cart = cart.filter(i=>i.id!==id); updateCartUI(); }
-        
-        document.getElementById('cart-close').addEventListener('click', ()=>document.getElementById('cart-sidebar').classList.remove('open'));
-        document.getElementById('top-cart').addEventListener('click', ()=>document.getElementById('cart-sidebar').classList.toggle('open'));
-        document.getElementById('cart-checkout').addEventListener('click', ()=>{
-            if(cart.length===0) alert("Carrinho vazio!");
-            else { alert(`✅ Compra finalizada! Total: R$ ${cart.reduce((a,i)=>a+i.price*i.quantity,0).toFixed(2)}\nObrigado por adquirir nossos produtos em impressão 3D!`); cart=[]; updateCartUI(); document.getElementById('cart-sidebar').classList.remove('open'); }
-        });
-        document.getElementById('top-portfolio').addEventListener('click', ()=>window.open('https://www.instagram.com/hybridbots/', '_blank'));
-        document.getElementById('top-whatsapp').addEventListener('click', ()=>window.open('https://wa.me/5511999999999', '_blank'));
-        
-        // Modal de produto
-        const modal = document.getElementById('productModal');
-        const modalImg = document.getElementById('modalImg');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalCategory = document.getElementById('modalCategory');
-        const modalDesc = document.getElementById('modalDesc');
-        const modalPrice = document.getElementById('modalPrice');
-        const modalBuy = document.getElementById('modalBuyBtn');
-        const modalBack = document.getElementById('modalBackBtn');
-        let currentId = null;
-        
-        function openModal(id) {
-            const p = products.find(p=>p.id===id);
-            if(!p) return;
-            currentId = id;
-            modalImg.src = p.img;
-            modalTitle.textContent = p.name;
-            modalCategory.textContent = p.category;
-            modalDesc.textContent = p.desc;
-            modalPrice.textContent = `R$ ${p.price.toFixed(2)}`;
-            modal.classList.add('active');
-        }
-        function closeModal() { modal.classList.remove('active'); currentId = null; }
-        
-        function attachButtonEvents() {
-            document.querySelectorAll('.btn-saiba-item').forEach(btn => {
-                btn.removeEventListener('click', handleSaibaClick);
-                btn.addEventListener('click', handleSaibaClick);
-            });
-            document.querySelectorAll('.static-card, .item').forEach(card => {
-                card.removeEventListener('click', handleCardClick);
-                card.addEventListener('click', handleCardClick);
-            });
-        }
-        
-        function handleSaibaClick(e) {
-            e.stopPropagation();
-            const prodId = parseInt(e.currentTarget.dataset.id);
-            openModal(prodId);
-        }
-        
-        function handleCardClick(e) {
-            if(e.target.classList.contains('btn-saiba-item')) return;
-            const prodId = parseInt(e.currentTarget.dataset.prodId);
-            if(!isNaN(prodId)) openModal(prodId);
-        }
-        
-        modalBuy.addEventListener('click', () => { if(currentId!==null) addToCart(currentId); closeModal(); });
-        modalBack.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
-        
-        attachButtonEvents();
+        const total = cart.reduce((a,i)=>a+(i.price*i.quantity),0);
+        document.getElementById('cart-total-value').textContent = `R$ ${total.toFixed(2)}`;
+    }
+    function addToCart(id) {
+        const prod = products.find(p=>p.id===id);
+        if(!prod) return;
+        const exist = cart.find(i=>i.id===id);
+        if(exist) exist.quantity++;
+        else cart.push({...prod, quantity:1});
         updateCartUI();
-    </script>
+        document.getElementById('cart-sidebar').classList.add('open');
+    }
+    function removeFromCart(id) { cart = cart.filter(i=>i.id!==id); updateCartUI(); }
+    
+    document.getElementById('cart-close').addEventListener('click', ()=>document.getElementById('cart-sidebar').classList.remove('open'));
+    document.getElementById('top-cart').addEventListener('click', ()=>document.getElementById('cart-sidebar').classList.toggle('open'));
+    document.getElementById('cart-checkout').addEventListener('click', ()=>{
+        if(cart.length===0) alert("Carrinho vazio!");
+        else { alert(`Compra finalizada! Total: R$ ${cart.reduce((a,i)=>a+i.price*i.quantity,0).toFixed(2)}`); cart=[]; updateCartUI(); document.getElementById('cart-sidebar').classList.remove('open'); }
+    });
+    document.getElementById('top-portfolio').addEventListener('click', ()=>window.open('https://www.instagram.com/hybridbots/', '_blank'));
+    document.getElementById('top-whatsapp').addEventListener('click', ()=>window.open('https://wa.me/5511999999999', '_blank'));
+    document.getElementById('btnParceiroWhats').addEventListener('click', () => {
+        const msg = "Olá! Tenho interesse em ser parceiro revendedor dos chaveiros 3D. Gostaria de saber mais sobre as condições (compra direta com 50% ou consignação 70/30) e frete para Mato Grosso.";
+        window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+    
+    // Modal
+    const modal = document.getElementById('productModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalBuy = document.getElementById('modalBuyBtn');
+    const modalBack = document.getElementById('modalBackBtn');
+    let currentId = null;
+    function openModal(id) {
+        const p = products.find(p=>p.id===id);
+        if(!p) return;
+        currentId = id;
+        modalImg.src = p.img;
+        modalTitle.textContent = p.name;
+        modalPrice.textContent = `R$ ${p.price.toFixed(2)}`;
+        modal.classList.add('active');
+    }
+    function closeModal() { modal.classList.remove('active'); currentId = null; }
+    function attachButtonEvents() {
+        document.querySelectorAll('.btn-saiba-item').forEach(btn => {
+            btn.removeEventListener('click', handleSaibaClick);
+            btn.addEventListener('click', handleSaibaClick);
+        });
+        document.querySelectorAll('.static-card, .item').forEach(card => {
+            card.removeEventListener('click', handleCardClick);
+            card.addEventListener('click', handleCardClick);
+        });
+    }
+    function handleSaibaClick(e) {
+        e.stopPropagation();
+        const prodId = parseInt(e.currentTarget.dataset.id);
+        openModal(prodId);
+    }
+    function handleCardClick(e) {
+        if(e.target.classList.contains('btn-saiba-item')) return;
+        const prodId = parseInt(e.currentTarget.dataset.prodId);
+        if(!isNaN(prodId)) openModal(prodId);
+    }
+    modalBuy.addEventListener('click', () => { if(currentId!==null) addToCart(currentId); closeModal(); });
+    modalBack.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+    attachButtonEvents();
+    updateCartUI();
+</script>
 </body>
 </html>
